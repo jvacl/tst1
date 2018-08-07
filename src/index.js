@@ -1,7 +1,8 @@
 const config = require("./config");
 const express = require("express");
-var mongoose = require("mongoose");
-var Promise = require("bluebird");
+const mongoose = require("mongoose");
+const Promise = require("bluebird");
+const router = require("./router/index");
 
 // globalne a mongoose knihovne nastavi Bluebird promisy - prozatim jsou lepsi nez nativni NodeJS Promisy
 global.Promise = Promise;
@@ -15,18 +16,18 @@ if (process.env.NODE_ENV !== "production") {
 
 var db = mongoose.connection;
 
-// pokud se podari pripojit do db tak muzem nakopnout a nakonfigurovat Express
+// pokud se podari pripojit do db tak muzem nakonfigurovat a nakopnout Express
 db.once("connected", function() {
   console.log("DB is connected");
 
   const app = express();
 
+  // express middleware a router viz https://expressjs.com/en/4x/api.html#router
+  // misto app.get("/" ...) pouziju router - flexibilnejsi pouziti, router je umisten v router/index
+  app.use("/api", router);
+
   app.listen(config.port, () => {
     console.log(`Web server listening on port ${config.port}`);
-  });
-  
-  app.get("/", (req, res) => {
-    res.send("\n\nHello, world!\n\n");
   });
 });
 
