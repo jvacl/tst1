@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
   res.send("\n\nHello, world. This is root of API \n\n");
 });
 
-// TODO vytknout /bumbani router do vlastniho filu. asi něco jako router.use("/bumbani", novyRouter)
+// TODO vytknout /bumbani router do vlastniho filu. asi něco jako router.use("/bumbani", novyRouter) - router v routeru
 router.get("/bumbani", (req, res) => {
   const bumbani = Bumbani.getList();
   res.json(bumbani);

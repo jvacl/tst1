@@ -23,7 +23,7 @@ db.once("connected", function() {
   const app = express();
 
   // express middleware a router viz https://expressjs.com/en/4x/api.html#router
-  // misto app.get("/" ...) pouziju router - flexibilnejsi pouziti, router je umisten v router/index
+  // misto primeho app.get("/" ...) pouziju router - flexibilnejsi pouziti, router je umisten v router/index
   app.use("/api", router);
 
   app.listen(config.port, () => {
