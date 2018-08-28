@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Promise = require("bluebird");
 const router = require("./router/index");
+const dotenv = require('dotenv').config({path: '../.env'});
 
 // globalne a mongoose knihovne nastavi Bluebird promisy - prozatim jsou lepsi nez nativni NodeJS Promisy
 global.Promise = Promise;
@@ -13,6 +14,8 @@ if (process.env.NODE_ENV !== "production") {
   mongoose.set("debug", true);
   Promise.longStackTraces();
 }
+
+//console.log(dotenv.parsed);
 
 var db = mongoose.connection;
 
@@ -42,15 +45,15 @@ db.on("disconnected", () =>
 // pripojit do db
 try {
   mongoose.connect(
-    config.dbConnectionString,
+    process.env.DB_URL + "/" + process.env.DB,
     {
-      user: config.dbUser,
-      pass: config.dbPassword,
+      user: process.env.DB_USER,
+      pass: process.env.DB_PASSWORD,
       useNewUrlParser: true
     }
   );
 
-  console.log(`Trying to connect to DB ${config.dbConnectionString}`);
+  console.log(`Trying to connect to DB ${process.env.DB_URL + "/" + process.env.DB}`);
 } catch (err) {
   console.log("Sever initialization failed ", err.message);
 }
